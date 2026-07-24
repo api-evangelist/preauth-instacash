@@ -1,0 +1,343 @@
+openapi: 3.0.3
+info:
+  title: Preauth Orders API
+  version: v1
+  description: REST API for Preauth's payment pre-authorization (payment guarantee) platform. A merchant creates an order, the buyer's card is pre-authorized (funds reserved) via the Preauth widget, and the merchant can later capture all or part of the reserved amount, cancel it, update it, or run a card liveness check. Generated faithfully from the public documentation at https://docs.preauth.io/api-rest.md — no OpenAPI is published by the provider.
+  contact:
+    name: Preauth Developers
+    email: devs@preauth.io
+    url: https://docs.preauth.io/
+  x-apievangelist-generated: true
+servers:
+- url: https://api.preauth.io/v1
+  description: Production
+security:
+- apiToken: []
+tags:
+- name: Orders
+  description: Create and manage pre-authorization orders.
+paths:
+  /order:
+    post:
+      operationId: createOrder
+      summary: Create order
+      description: Create a pre-authorization order. The returned order id is used with the Widget to perform the card hold and with every other operation.
+      tags:
+      - Orders
+      security:
+      - apiToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '200':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '401':
+          description: Missing or invalid api-token
+  /order/{id}:
+    get:
+      operationId: getOrder
+      summary: Get order
+      description: Retrieve the current state of an order by its id.
+      tags:
+      - Orders
+      security:
+      - apiToken: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      responses:
+        '200':
+          description: Order found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '401':
+          description: Missing or invalid api-token
+        '404':
+          description: Order not found
+    patch:
+      operationId: updateOrder
+      summary: Update order
+      description: Modify the amount or limit_date of an order. Only permitted while the order is in `created` or `in_progress` status.
+      tags:
+      - Orders
+      security:
+      - apiToken: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrderRequest'
+      responses:
+        '200':
+          description: Order updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusOk'
+        '401':
+          description: Missing or invalid api-token
+        '404':
+          description: Order not found
+    delete:
+      operationId: cancelOrder
+      summary: Cancel order
+      description: Cancel an order, releasing the reserved funds. The order moves to `canceled` and cannot transition to any other state afterwards.
+      tags:
+      - Orders
+      security:
+      - apiToken: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      responses:
+        '200':
+          description: Order canceled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusOk'
+        '401':
+          description: Missing or invalid api-token
+        '404':
+          description: Order not found
+  /order/{id}/capture:
+    post:
+      operationId: captureOrder
+      summary: Capture order
+      description: Charge all or part of the reserved amount. keep_alive indicates whether the remaining reserved balance should continue to be held or released.
+      tags:
+      - Orders
+      security:
+      - apiToken: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaptureOrderRequest'
+      responses:
+        '200':
+          description: Amount captured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusOk'
+        '401':
+          description: Missing or invalid api-token
+        '404':
+          description: Order not found
+  /order/{id}/liveness:
+    post:
+      operationId: livenessCheck
+      summary: Card liveness check
+      description: Run a liveness check on the card associated with the order to confirm it is still active. Only one check per day is allowed unless `force` is true.
+      tags:
+      - Orders
+      security:
+      - apiToken: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LivenessRequest'
+      responses:
+        '200':
+          description: Liveness check executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusOk'
+        '401':
+          description: Missing or invalid api-token
+        '404':
+          description: Order not found
+components:
+  schemas:
+    CaptureOrderRequest:
+      type: object
+      required:
+      - amount
+      - keep_alive
+      properties:
+        amount:
+          type: integer
+          description: Amount to capture in minor units; must be <= order.pending_amount.
+        keep_alive:
+          type: boolean
+          description: Whether to keep pre-authorizing the remaining balance.
+    UpdateOrderRequest:
+      type: object
+      required:
+      - amount
+      - limit_date
+      properties:
+        amount:
+          type: integer
+          description: New amount in minor units; must be lower than order.pending_amount.
+        limit_date:
+          type: string
+          format: date
+          description: New expiry date, bounded by the associated card's expiry.
+    OrderStatus:
+      type: string
+      description: Lifecycle status of an order.
+      enum:
+      - created
+      - in_progress
+      - canceled
+      - finished
+      - desynchronized
+    StatusOk:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
+    OrderMeta:
+      type: object
+      description: Free-form additional data attached to the order.
+      properties:
+        client:
+          type: object
+          properties:
+            phone:
+              type: string
+              description: E.123 formatted phone.
+            documentType:
+              type: string
+            document:
+              type: string
+            email:
+              type: string
+              description: RFC 5322 email.
+            name:
+              type: string
+        product:
+          type: object
+          properties:
+            title:
+              type: string
+        billing:
+          type: object
+          properties:
+            address:
+              type: string
+            city:
+              type: string
+            region:
+              type: string
+            country:
+              type: string
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 4085-whOdSyS2FkGmm4j9feJNeMh0SjQDgLa5xAUENBkajsfQK
+        reference:
+          type: string
+          example: order_00001
+        currency:
+          type: string
+          example: PEN
+        country:
+          type: string
+          example: PE
+        limit_date:
+          type: string
+          example: '2022-10-10'
+        amount:
+          type: integer
+          example: 15000
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        pending_amount:
+          type: integer
+          example: 15000
+        captured_amount:
+          type: integer
+          example: 0
+        card_id:
+          type: integer
+          nullable: true
+          example: 1025
+        meta:
+          $ref: '#/components/schemas/OrderMeta'
+        created_at:
+          type: string
+          example: '2021-10-15 20:31:07'
+        updated_at:
+          type: string
+          example: '2021-10-15 20:35:28'
+    LivenessRequest:
+      type: object
+      properties:
+        force:
+          type: boolean
+          default: false
+          description: Force an additional liveness check beyond the one-per-day limit.
+    CreateOrderRequest:
+      type: object
+      required:
+      - country
+      - currency
+      - amount
+      - reference
+      - limit_date
+      properties:
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (e.g. PE, CL, MX).
+          example: PE
+        currency:
+          type: string
+          description: ISO 4217 currency code (e.g. PEN, CLP, MXN).
+          example: PEN
+        amount:
+          type: integer
+          description: Amount in the minor currency unit (e.g. cents).
+          example: 15000
+        reference:
+          type: string
+          description: Merchant reference for the order.
+          example: order_00001
+        limit_date:
+          type: string
+          format: date
+          description: Order expiry date (YYYY-MM-DD). After it the pending amount is released.
+          example: '2022-10-10'
+        card_id:
+          type: integer
+          description: Id of a previously stored card (from another order) to reuse.
+        meta:
+          $ref: '#/components/schemas/OrderMeta'
+  parameters:
+    OrderId:
+      name: id
+      in: path
+      required: true
+      description: Order id.
+      schema:
+        type: string
+  securitySchemes:
+    apiToken:
+      type: apiKey
+      in: header
+      name: x-auth-token
+      description: API token issued in the developer panel (https://dashboard.preauth.io/panel/devs).
