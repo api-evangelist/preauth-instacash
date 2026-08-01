@@ -1,0 +1,13 @@
+# generated: '2026-07-20'
+# method: searched
+# source: https://docs.preauth.io/llms.txt
+# Preauth
+
+## v0.1.0
+
+- [Bienvenida(o) 🖖](https://docs.preauth.io/readme.md)
+- [Primeros pasos](https://docs.preauth.io/primeros-pasos.md): En 5 pasos habrás aprendido cómo funciona Preauth y seguramente terminaste con gran parte de la integración. Disfruta el camino.
+- [API Reference](https://docs.preauth.io/api-rest.md): Aprendamos cómo funciona el API. Sabemos que suele ser dolorosa esta parte, pero tranquila, estamos contigo para cualquier duda en devs@preauth.io
+- [Widget](https://docs.preauth.io/widget.md): Intégranos en tu página y disfruta de la magia.
+- [Notificaciones/Webhooks](https://docs.preauth.io/notificaciones.md): Entérate cada vez que pasa algo con alguna de tus órdenes.
+- [Paso a producción](https://docs.preauth.io/paso-a-produccion.md): En muy sencillos pasos podrás obtener la información necesaria para que podamos ayudarte a configurar tu cuenta y comenzar a usar Preauth

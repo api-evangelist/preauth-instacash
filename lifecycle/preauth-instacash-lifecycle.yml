@@ -1,0 +1,21 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.preauth.io/api-rest.md ; https://preauth.io ; https://docs.preauth.io/paso-a-produccion.md
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://docs.preauth.io/api-rest.md
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No deprecation or Sunset/Deprecation (RFC 8594) policy is published.
+sla:
+  uptime_target: '99.95%'
+  source: https://preauth.io
+status_page: null
+certification:
+  description: >-
+    Going to production requires a certification call with a Preauth POC who validates
+    requests/responses before production credentials are issued.
+  docs: https://docs.preauth.io/paso-a-produccion.md
+deprecated_operations: []

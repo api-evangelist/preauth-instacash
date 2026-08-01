@@ -1,8 +1,28 @@
 aid: preauth-instacash
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/preauth-instacash.png
 name: PreAuth (Instacash)
-description: PreAuth (Instacash) is a company surfaced as a portfolio company of 500-global and added
-  to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+description: >-
+  Preauth is a Latin American fintech (the payment-guarantee product associated with the
+  Instacash / Reevalúa lineage, surfaced via 500 Global) that lets businesses take and manage
+  payment guarantees through card pre-authorization. A merchant creates an order via the REST
+  API, the buyer's card is pre-authorized (funds reserved) through the hosted Preauth widget,
+  and the merchant can later capture all or part of the reserved amount, update it, cancel it
+  to release the hold, or run a card liveness check. It operates across Chile, Colombia,
+  Mexico, Peru, and Argentina and integrates with Izipay, Kushki, dLocal, Stripe, Mercadopago,
+  and Conekta as payment processors. Authentication is a per-request x-auth-token API key, and
+  order lifecycle events are delivered by webhooks.
 url: https://raw.githubusercontent.com/api-evangelist/preauth-instacash/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -10,17 +30,88 @@ x-backed-by:
 - 500-global
 x-tier: stub
 x-tier-reason: portfolio-lead
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v1
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
-apis: []
+- Payments
+- Payment Pre-Authorization
+- Payment Guarantees
+- Fintech
+- Latin America
+- Cards
+apis:
+- aid: preauth-instacash:preauth-instacash-orders-api
+  name: PreAuth (Instacash) Orders API
+  description: Create and manage pre-authorization orders.
+  humanURL: https://docs.preauth.io/api-rest
+  baseURL: https://api.preauth.io/v1
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/preauth-instacash-orders-api-openapi.yml
+  - type: AsyncAPI
+    url: asyncapi/preauth-instacash-webhooks-asyncapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/preauth-instacash-domain-security.yml
 - type: Website
-  url: https://instacash.pe
+  url: https://preauth.io
+- type: DeveloperPortal
+  url: https://dashboard.preauth.io/
+- type: Documentation
+  url: https://docs.preauth.io/
+- type: APIReference
+  url: https://docs.preauth.io/api-rest
+- type: GettingStarted
+  url: https://docs.preauth.io/primeros-pasos
+- type: Support
+  url: https://join.slack.com/t/preauth-soporte/shared_invite/zt-18pzujyy8-F6cZBsHmZ_5OZFd16fnnWw
+- type: SignUp
+  url: https://dashboard.preauth.io/register
+- type: Authentication
+  url: authentication/preauth-instacash-authentication.yml
+- type: Packages
+  url: packages/preauth-instacash-packages.yml
+- type: SDKs
+  url: packages/preauth-instacash-packages.yml
+- type: Components
+  url: components/preauth-instacash-components.yml
+- type: Sandbox
+  url: sandbox/preauth-instacash-sandbox.yml
+- type: MCPServer
+  url: mcp/preauth-instacash-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/preauth-instacash-llms.txt
+- type: Webhooks
+  url: asyncapi/preauth-instacash-webhooks-asyncapi.yml
+- type: Conventions
+  url: conventions/preauth-instacash-conventions.yml
+- type: ErrorCatalog
+  url: errors/preauth-instacash-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/preauth-instacash-lifecycle.yml
+- type: DataModel
+  url: data-model/preauth-instacash-data-model.yml
+- type: Conformance
+  url: conformance/preauth-instacash-conformance.yml
+- type: Compliance
+  url: security/preauth-instacash-trust-center.yml
+- type: TrustCenter
+  url: security/preauth-instacash-trust-center.yml
+- type: WellKnown
+  url: well-known/preauth-instacash-well-known.yml

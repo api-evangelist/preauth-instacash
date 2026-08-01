@@ -1,0 +1,31 @@
+generated: '2026-07-20'
+method: searched
+source: https://preauth.io ; https://docs.preauth.io/api-rest.md
+standards:
+  - id: pci-dss
+    conforms: true
+    evidence: >-
+      Card data is captured by the hosted Preauth widget (cdn.preauth.io/preauth.js);
+      merchants never handle raw PAN via the REST API. Preauth publishes SOC 2 Type II
+      and ISO 27001:2022 posture.
+  - id: soc2-type-ii
+    conforms: true
+    evidence: SOC 2 Type II stated on preauth.io.
+  - id: iso-27001
+    conforms: true
+    evidence: ISO 27001:2022 stated on preauth.io.
+  - id: oauth2
+    conforms: false
+    evidence: API uses an apiKey (x-auth-token header), not OAuth 2.0.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Error responses are not documented as application/problem+json.
+  - id: idempotency-keys
+    conforms: false
+    evidence: No Idempotency-Key header is documented.
+  - id: iso-3166-1
+    conforms: true
+    evidence: country field uses ISO 3166-1 alpha-2 codes.
+  - id: iso-4217
+    conforms: true
+    evidence: currency field uses ISO 4217 codes.

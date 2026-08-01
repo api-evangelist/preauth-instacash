@@ -1,0 +1,35 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.preauth.io/api-rest.md ; derived from openapi/preauth-instacash-orders-openapi.yml
+auth:
+  style: api-key
+  transport: header
+  header: x-auth-token
+  see: authentication/preauth-instacash-authentication.yml
+idempotency:
+  supported: false
+  notes: >-
+    No Idempotency-Key header is documented. The merchant-supplied `reference` on order
+    creation is the natural client-side dedupe key but the API does not enforce it.
+pagination:
+  supported: false
+  notes: Order operations are single-resource; no list endpoint is documented.
+amounts:
+  representation: integer minor units
+  notes: 'Amounts are in the smallest currency denomination (e.g. cents). For US$100 send 100000.'
+locale_codes:
+  country: ISO 3166-1 alpha-2
+  currency: ISO 4217
+versioning:
+  style: uri-path
+  current: v1
+  see: lifecycle/preauth-instacash-lifecycle.yml
+errors:
+  see: errors/preauth-instacash-error-codes.yml
+rate_limiting:
+  documented: false
+  liveness_limit: One card liveness check per order per day unless force=true.
+webhooks:
+  style: 'HTTP POST envelope { type, order }'
+  configure: https://dashboard.preauth.io/panel/devs
+  see: asyncapi/preauth-instacash-webhooks-asyncapi.yml

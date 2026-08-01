@@ -1,0 +1,24 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.preauth.io/widget.md ; https://docs.preauth.io/api-rest.md
+notes: >-
+  Preauth does not publish a REST error/decline-code reference. The only documented
+  error codes are the client-side widget PreauthErrorCode values. Order lifecycle
+  includes a `desynchronized` state that signals a failed re-authorization. Not a card
+  acquirer decline table, so no decline-codes artifact is emitted.
+envelope:
+  widget: '{ "code": <PreauthErrorCode>, "message": <text> }'
+widget_error_codes:
+  - code: 100
+    meaning: Widget was closed by the user.
+    action: Treat as user cancellation; allow retry.
+  - code: 101
+    meaning: Widget failed to load correctly.
+    action: Check the SDK script load and network; retry.
+  - code: 102
+    meaning: An error occurred while performing the pre-authorization.
+    action: Verify the order and card, then retry or contact support.
+order_failure_states:
+  - status: desynchronized
+    meaning: The card associated with the order can no longer be re-authorized.
+    action: Capture the still-authorized amount or contact the buyer for a new card.

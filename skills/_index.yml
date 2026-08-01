@@ -1,0 +1,12 @@
+generated: '2026-07-20'
+method: generated
+source: openapi/preauth-instacash-orders-openapi.yml
+skills:
+  - file: preauth-instacash-create-preauthorization.md
+    name: preauth-create-preauthorization
+    description: Create a Preauth order and pre-authorize funds on a buyer's card.
+    operations: [createOrder, getOrder]
+  - file: preauth-instacash-capture-order.md
+    name: preauth-capture-order
+    description: Capture all or part of a pre-authorized order and manage the remaining hold.
+    operations: [getOrder, captureOrder, cancelOrder, livenessCheck]

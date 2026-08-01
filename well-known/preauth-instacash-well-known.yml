@@ -1,0 +1,21 @@
+generated: '2026-07-20'
+method: searched
+source: live probes of Preauth hosts
+notes: >-
+  No .well-known discovery documents were retrievable. The API host api.preauth.io
+  returns 403 to unauthenticated .well-known requests; preauth.io and docs.preauth.io
+  return 404. Absence recorded as valid data — no WellKnown/SecurityTxt pointer wired.
+hosts:
+  - host: https://api.preauth.io
+    documents:
+      - { path: /.well-known/security.txt, status: 403 }
+      - { path: /.well-known/openid-configuration, status: 403 }
+      - { path: /.well-known/oauth-authorization-server, status: 403 }
+      - { path: /.well-known/api-catalog, status: 403 }
+      - { path: /.well-known/ai-plugin.json, status: 403 }
+  - host: https://preauth.io
+    documents:
+      - { path: /.well-known/security.txt, status: 404 }
+  - host: https://docs.preauth.io
+    documents:
+      - { path: /.well-known/security.txt, status: 404 }

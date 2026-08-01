@@ -1,0 +1,19 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Preauth Orders API
+  version: 1.0.0
+extends: openapi/preauth-instacash-orders-openapi.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: '2026-07-20'
+      x-api-category: payments
+      x-api-subcategory: payment-pre-authorization
+  - target: $.info
+    update:
+      x-webhooks-spec: asyncapi/preauth-instacash-webhooks-asyncapi.yml
+  - target: $.tags[?(@.name=='Orders')]
+    update:
+      x-idempotency: >-
+        No idempotency key is documented. Use the merchant `reference` to detect
+        duplicate order creation on your side.

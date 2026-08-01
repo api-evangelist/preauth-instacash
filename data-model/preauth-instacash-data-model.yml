@@ -1,0 +1,32 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/preauth-instacash-orders-openapi.yml ; https://docs.preauth.io/api-rest.md
+entities:
+  - name: Order
+    description: A payment pre-authorization (funds reserved on a buyer's card).
+    id_field: id
+    id_example: 4085-whOdSyS2FkGmm4j9feJNeMh0SjQDgLa5xAUENBkajsfQK
+    fields:
+      - { name: reference, type: string, note: merchant reference }
+      - { name: currency, type: string, note: ISO 4217 }
+      - { name: country, type: string, note: ISO 3166-1 alpha-2 }
+      - { name: amount, type: integer, note: minor units }
+      - { name: pending_amount, type: integer }
+      - { name: captured_amount, type: integer }
+      - { name: status, type: enum, note: 'created|in_progress|canceled|finished|desynchronized' }
+      - { name: limit_date, type: date }
+      - { name: card_id, type: integer, note: reference to a stored Card }
+      - { name: meta, type: object }
+  - name: Card
+    description: A stored card that can be reused across orders (referenced by card_id).
+    id_field: card_id
+    id_example: 1025
+    note: >-
+      Not directly retrievable via a documented endpoint; surfaced only as card_id on an
+      Order and reusable when creating a new order.
+relationships:
+  - from: Order
+    to: Card
+    kind: belongs_to
+    via: card_id
+    note: An order may be associated with a previously stored card to speed re-authorization.

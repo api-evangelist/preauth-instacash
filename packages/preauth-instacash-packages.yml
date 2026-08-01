@@ -1,0 +1,18 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.preauth.io/widget.md
+notes: >-
+  Preauth ships one first-party client library: a hosted browser JS SDK loaded from
+  their CDN (cdn.preauth.io/preauth.js) that renders the card pre-authorization widget.
+  No packages were found on npm, PyPI, Maven Central, NuGet, pkg.go.dev, RubyGems,
+  Packagist, or crates.io as of this pass.
+packages:
+  - language: javascript
+    registry: cdn
+    name: preauth.js
+    url: https://cdn.preauth.io/preauth.js
+    install: '<script src="https://cdn.preauth.io/preauth.js"></script>'
+    official: true
+    description: >-
+      Hosted browser SDK that mounts the Preauth widget (preauth("init", ...) /
+      preauth("start")) to capture card details and perform the pre-authorization.

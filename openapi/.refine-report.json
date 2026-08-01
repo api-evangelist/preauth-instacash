@@ -1,0 +1,14 @@
+{
+  "provider": "preauth-instacash",
+  "sources": [
+    "preauth-instacash-orders-api-openapi.yml"
+  ],
+  "outputs": [
+    "preauth-instacash-orders-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

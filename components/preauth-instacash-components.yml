@@ -1,0 +1,26 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.preauth.io/widget.md
+components:
+  - family: Widget
+    name: Preauth Widget
+    type: hosted-embed
+    loader: https://cdn.preauth.io/preauth.js
+    global: preauth
+    description: >-
+      Embeddable card pre-authorization surface. The merchant loads the CDN script,
+      calls preauth("init", { order, onSuccess, onError }) with an order id created via
+      the REST API, then preauth("start") to present the card-entry modal to the buyer.
+    api_binding: openapi/preauth-instacash-orders-openapi.yml#createOrder
+    callbacks:
+      - name: onSuccess
+        description: Fires when the order is pre-authorized successfully.
+      - name: onError
+        description: Fires on failure; receives a PreauthError { code, message }.
+    error_codes:
+      - code: 100
+        meaning: Widget closed by the user.
+      - code: 101
+        meaning: Widget failed to load correctly.
+      - code: 102
+        meaning: An error occurred while performing the pre-authorization.

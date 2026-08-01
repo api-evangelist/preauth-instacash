@@ -1,0 +1,24 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.preauth.io/primeros-pasos.md ; https://docs.preauth.io/paso-a-produccion.md
+notes: >-
+  Preauth uses test vs production API tokens distinguished by a token prefix. The
+  getting-started guide demonstrates a test token (token_test_ prefix). Production
+  requires a certification call and configuring a real payment processor
+  (Izipay, Kushki, dLocal, Stripe, Mercadopago, Conekta). No published test card
+  numbers were found; card capture is handled by the hosted widget.
+modes:
+  - name: test
+    api_token_prefix: token_test_
+    how_to_get: Developer panel at https://dashboard.preauth.io/panel/devs
+  - name: production
+    requirement: >-
+      Certification call with assigned POC + payment-processor credentials submitted
+      to Preauth. See https://docs.preauth.io/paso-a-produccion.md
+processors:
+  - Izipay
+  - Kushki
+  - dLocal
+  - Stripe
+  - Mercadopago
+  - Conekta

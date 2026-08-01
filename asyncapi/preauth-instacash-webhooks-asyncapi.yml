@@ -1,0 +1,68 @@
+# generated: '2026-07-20'
+# method: searched
+# source: https://docs.preauth.io/notificaciones.md
+asyncapi: 2.6.0
+info:
+  title: Preauth Webhooks
+  version: v1
+  description: >-
+    Preauth delivers order lifecycle notifications as HTTP POST requests to a URL the
+    merchant configures in the developer panel (https://dashboard.preauth.io/panel/devs).
+    Faithfully modeled from https://docs.preauth.io/notificaciones.md — the provider
+    documents webhooks but does not publish an AsyncAPI document.
+defaultContentType: application/json
+channels:
+  order-notifications:
+    description: Merchant-configured webhook endpoint that receives all order events.
+    subscribe:
+      summary: Receive Preauth order events.
+      operationId: receiveOrderEvent
+      message:
+        oneOf:
+          - $ref: '#/components/messages/OrderLivenessFail'
+          - $ref: '#/components/messages/OrderDesynchronized'
+          - $ref: '#/components/messages/OrderCaptured'
+components:
+  messages:
+    OrderLivenessFail:
+      name: order.liveness.fail
+      title: Order about to desynchronize
+      summary: >-
+        The card failed to verify its status; the merchant should decide whether to
+        capture the authorized amount or contact the user for a new card.
+      payload:
+        $ref: '#/components/schemas/WebhookEnvelope'
+    OrderDesynchronized:
+      name: order.desynchronized
+      title: Order desynchronized
+      summary: A pre-authorization could not be resumed and the order is desynchronized.
+      payload:
+        $ref: '#/components/schemas/WebhookEnvelope'
+    OrderCaptured:
+      name: order.captured
+      title: Order captured
+      summary: A partial or total capture of the authorized amount was executed.
+      payload:
+        $ref: '#/components/schemas/WebhookEnvelope'
+  schemas:
+    WebhookEnvelope:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [order.liveness.fail, order.desynchronized, order.captured]
+        order:
+          type: object
+          properties:
+            id: { type: string }
+            reference: { type: string }
+            currency: { type: string }
+            country: { type: string }
+            limit_date: { type: string }
+            amount: { type: integer }
+            status: { type: string }
+            pending_amount: { type: integer }
+            captured_amount: { type: integer }
+            meta: { type: object }
+            created_at: { type: string }
+            updated_at: { type: string }

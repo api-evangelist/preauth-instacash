@@ -1,0 +1,17 @@
+generated: '2026-07-20'
+method: searched
+source: https://preauth.io
+notes: >-
+  Preauth states its security posture on the corporate site rather than a dedicated
+  trust portal. Named certifications and SLA are captured below.
+trust_page: https://preauth.io
+certifications:
+  - name: ISO 27001:2022
+    status: stated
+  - name: SOC 2 Type II
+    status: stated
+sla:
+  uptime_target: '99.95%'
+compliance_program: >-
+  ISO 27001:2022 and SOC 2 Type II posture published on preauth.io. Card data is
+  captured through the hosted widget, keeping merchants out of PCI scope for PAN handling.
