@@ -1,0 +1,19 @@
+[
+  {
+    "repo": "preauth-instacash",
+    "captured_at": "2026-08-17T081332",
+    "source_url": "https://dashboard.preauth.io/",
+    "source_type": "DeveloperPortal",
+    "file": "preauth-instacash-2026-08-17T081332.png",
+    "bytes": 60767
+  },
+  {
+    "repo": "preauth-instacash",
+    "captured_at": "2026-08-17T124847",
+    "source_url": "https://preauth.io",
+    "source_type": "root-domain",
+    "file": "preauth-instacash-2026-08-17T124847.png",
+    "bytes": 102571,
+    "capture": "playwright-local"
+  }
+]

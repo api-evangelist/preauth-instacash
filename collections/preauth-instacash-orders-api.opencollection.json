@@ -1,0 +1,184 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Preauth Orders API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-auth-token",
+      "value": "{{x-auth-token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.preauth.io/v1/order",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a pre-authorization order. The returned order id is used with the Widget to perform the card hold and with every other operation."
+        },
+        {
+          "info": {
+            "name": "Get order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.preauth.io/v1/order/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Order id."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the current state of an order by its id."
+        },
+        {
+          "info": {
+            "name": "Update order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.preauth.io/v1/order/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Order id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Modify the amount or limit_date of an order. Only permitted while the order is in `created` or `in_progress` status."
+        },
+        {
+          "info": {
+            "name": "Cancel order",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.preauth.io/v1/order/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Order id."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cancel an order, releasing the reserved funds. The order moves to `canceled` and cannot transition to any other state afterwards."
+        },
+        {
+          "info": {
+            "name": "Capture order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.preauth.io/v1/order/:id/capture",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Order id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Charge all or part of the reserved amount. keep_alive indicates whether the remaining reserved balance should continue to be held or released."
+        },
+        {
+          "info": {
+            "name": "Card liveness check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.preauth.io/v1/order/:id/liveness",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Order id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Run a liveness check on the card associated with the order to confirm it is still active. Only one check per day is allowed unless `force` is true."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
