@@ -53,6 +53,8 @@ apis:
   humanURL: https://docs.preauth.io/api-rest
   baseURL: https://api.preauth.io/v1
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
