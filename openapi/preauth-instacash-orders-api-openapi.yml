@@ -169,53 +169,41 @@ paths:
           description: Order not found
 components:
   schemas:
-    CreateOrderRequest:
+    OrderMeta:
       type: object
-      required:
-      - country
-      - currency
-      - amount
-      - reference
-      - limit_date
+      description: Free-form additional data attached to the order.
       properties:
-        country:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (e.g. PE, CL, MX).
-          example: PE
-        currency:
-          type: string
-          description: ISO 4217 currency code (e.g. PEN, CLP, MXN).
-          example: PEN
-        amount:
-          type: integer
-          description: Amount in the minor currency unit (e.g. cents).
-          example: 15000
-        reference:
-          type: string
-          description: Merchant reference for the order.
-          example: order_00001
-        limit_date:
-          type: string
-          format: date
-          description: Order expiry date (YYYY-MM-DD). After it the pending amount is released.
-          example: '2022-10-10'
-        card_id:
-          type: integer
-          description: Id of a previously stored card (from another order) to reuse.
-        meta:
-          $ref: '#/components/schemas/OrderMeta'
-    CaptureOrderRequest:
-      type: object
-      required:
-      - amount
-      - keep_alive
-      properties:
-        amount:
-          type: integer
-          description: Amount to capture in minor units; must be <= order.pending_amount.
-        keep_alive:
-          type: boolean
-          description: Whether to keep pre-authorizing the remaining balance.
+        client:
+          type: object
+          properties:
+            phone:
+              type: string
+              description: E.123 formatted phone.
+            documentType:
+              type: string
+            document:
+              type: string
+            email:
+              type: string
+              description: RFC 5322 email.
+            name:
+              type: string
+        product:
+          type: object
+          properties:
+            title:
+              type: string
+        billing:
+          type: object
+          properties:
+            address:
+              type: string
+            city:
+              type: string
+            region:
+              type: string
+            country:
+              type: string
     UpdateOrderRequest:
       type: object
       required:
@@ -229,6 +217,12 @@ components:
           type: string
           format: date
           description: New expiry date, bounded by the associated card's expiry.
+    StatusOk:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
     Order:
       type: object
       properties:
@@ -271,6 +265,25 @@ components:
         updated_at:
           type: string
           example: '2021-10-15 20:35:28'
+    CaptureOrderRequest:
+      type: object
+      required:
+      - amount
+      - keep_alive
+      properties:
+        amount:
+          type: integer
+          description: Amount to capture in minor units; must be <= order.pending_amount.
+        keep_alive:
+          type: boolean
+          description: Whether to keep pre-authorizing the remaining balance.
+    LivenessRequest:
+      type: object
+      properties:
+        force:
+          type: boolean
+          default: false
+          description: Force an additional liveness check beyond the one-per-day limit.
     OrderStatus:
       type: string
       description: Lifecycle status of an order.
@@ -280,54 +293,41 @@ components:
       - canceled
       - finished
       - desynchronized
-    LivenessRequest:
+    CreateOrderRequest:
       type: object
+      required:
+      - country
+      - currency
+      - amount
+      - reference
+      - limit_date
       properties:
-        force:
-          type: boolean
-          default: false
-          description: Force an additional liveness check beyond the one-per-day limit.
-    OrderMeta:
-      type: object
-      description: Free-form additional data attached to the order.
-      properties:
-        client:
-          type: object
-          properties:
-            phone:
-              type: string
-              description: E.123 formatted phone.
-            documentType:
-              type: string
-            document:
-              type: string
-            email:
-              type: string
-              description: RFC 5322 email.
-            name:
-              type: string
-        product:
-          type: object
-          properties:
-            title:
-              type: string
-        billing:
-          type: object
-          properties:
-            address:
-              type: string
-            city:
-              type: string
-            region:
-              type: string
-            country:
-              type: string
-    StatusOk:
-      type: object
-      properties:
-        status:
+        country:
           type: string
-          example: OK
+          description: ISO 3166-1 alpha-2 country code (e.g. PE, CL, MX).
+          example: PE
+        currency:
+          type: string
+          description: ISO 4217 currency code (e.g. PEN, CLP, MXN).
+          example: PEN
+        amount:
+          type: integer
+          description: Amount in the minor currency unit (e.g. cents).
+          example: 15000
+        reference:
+          type: string
+          description: Merchant reference for the order.
+          example: order_00001
+        limit_date:
+          type: string
+          format: date
+          description: Order expiry date (YYYY-MM-DD). After it the pending amount is released.
+          example: '2022-10-10'
+        card_id:
+          type: integer
+          description: Id of a previously stored card (from another order) to reuse.
+        meta:
+          $ref: '#/components/schemas/OrderMeta'
   parameters:
     OrderId:
       name: id
