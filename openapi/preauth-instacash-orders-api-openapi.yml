@@ -168,42 +168,15 @@ paths:
         '404':
           description: Order not found
 components:
+  parameters:
+    OrderId:
+      name: id
+      in: path
+      required: true
+      description: Order id.
+      schema:
+        type: string
   schemas:
-    OrderMeta:
-      type: object
-      description: Free-form additional data attached to the order.
-      properties:
-        client:
-          type: object
-          properties:
-            phone:
-              type: string
-              description: E.123 formatted phone.
-            documentType:
-              type: string
-            document:
-              type: string
-            email:
-              type: string
-              description: RFC 5322 email.
-            name:
-              type: string
-        product:
-          type: object
-          properties:
-            title:
-              type: string
-        billing:
-          type: object
-          properties:
-            address:
-              type: string
-            city:
-              type: string
-            region:
-              type: string
-            country:
-              type: string
     UpdateOrderRequest:
       type: object
       required:
@@ -217,12 +190,6 @@ components:
           type: string
           format: date
           description: New expiry date, bounded by the associated card's expiry.
-    StatusOk:
-      type: object
-      properties:
-        status:
-          type: string
-          example: OK
     Order:
       type: object
       properties:
@@ -265,34 +232,41 @@ components:
         updated_at:
           type: string
           example: '2021-10-15 20:35:28'
-    CaptureOrderRequest:
+    OrderMeta:
       type: object
-      required:
-      - amount
-      - keep_alive
+      description: Free-form additional data attached to the order.
       properties:
-        amount:
-          type: integer
-          description: Amount to capture in minor units; must be <= order.pending_amount.
-        keep_alive:
-          type: boolean
-          description: Whether to keep pre-authorizing the remaining balance.
-    LivenessRequest:
-      type: object
-      properties:
-        force:
-          type: boolean
-          default: false
-          description: Force an additional liveness check beyond the one-per-day limit.
-    OrderStatus:
-      type: string
-      description: Lifecycle status of an order.
-      enum:
-      - created
-      - in_progress
-      - canceled
-      - finished
-      - desynchronized
+        client:
+          type: object
+          properties:
+            phone:
+              type: string
+              description: E.123 formatted phone.
+            documentType:
+              type: string
+            document:
+              type: string
+            email:
+              type: string
+              description: RFC 5322 email.
+            name:
+              type: string
+        product:
+          type: object
+          properties:
+            title:
+              type: string
+        billing:
+          type: object
+          properties:
+            address:
+              type: string
+            city:
+              type: string
+            region:
+              type: string
+            country:
+              type: string
     CreateOrderRequest:
       type: object
       required:
@@ -328,14 +302,40 @@ components:
           description: Id of a previously stored card (from another order) to reuse.
         meta:
           $ref: '#/components/schemas/OrderMeta'
-  parameters:
-    OrderId:
-      name: id
-      in: path
-      required: true
-      description: Order id.
-      schema:
-        type: string
+    OrderStatus:
+      type: string
+      description: Lifecycle status of an order.
+      enum:
+      - created
+      - in_progress
+      - canceled
+      - finished
+      - desynchronized
+    StatusOk:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
+    CaptureOrderRequest:
+      type: object
+      required:
+      - amount
+      - keep_alive
+      properties:
+        amount:
+          type: integer
+          description: Amount to capture in minor units; must be <= order.pending_amount.
+        keep_alive:
+          type: boolean
+          description: Whether to keep pre-authorizing the remaining balance.
+    LivenessRequest:
+      type: object
+      properties:
+        force:
+          type: boolean
+          default: false
+          description: Force an additional liveness check beyond the one-per-day limit.
   securitySchemes:
     apiToken:
       type: apiKey
